@@ -189,13 +189,15 @@ function makeUL(count) {
 					// Create the list element:
 					var list = document.createElement('ul');
 					for(var i = 0; i < count; i++) {
-						console.log(i);
+						  console.log(i);
 							// Create the list item:
+							window.Reddit.methods.getMessageContents(i).call().then(function(result) {
 							var item = document.createElement('li');
 							// Set its contents:
-							item.appendChild(document.createTextNode(array[i]));
+							item.appendChild(document.createTextNode(result));
 							// Add it to the list:
 							list.appendChild(item);
+						});
 					}
 					// Finally, return the constructed list:
 					return list;
@@ -223,12 +225,13 @@ function makeUL(count) {
               contractABI,
               contractAddress
 						);
-						getMessageCount = window.Reddit.methods.getMessageCount().call().then((message)=>{
+						window.Reddit.methods.getMessageCount().call().then(function(result) {
+							document.getElementById('message').appendChild(makeUL(result));
 						});
 						// $("#message").text(message)
 						// messageList =window.Reddit.methods.message().outputs;
 			// Add the contents of options[0] to #foo:
-			document.getElementById('message').appendChild(makeUL(getMessageCount));
+
 		}
       // Legacy dapp browsers...
       else if (window.web3) {
