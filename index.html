@@ -189,12 +189,25 @@ function makeUL(count) {
 					// Create the list element:
 					var list = document.createElement('ul');
 					for(var i = 0; i < count; i++) {
-						  console.log(i);
+							console.log(i);
+
 							// Create the list item:
-							window.Reddit.methods.getMessageContents(i).call().then(function(result) {
-							var item = document.createElement('li');
+						window.Reddit.methods.getMessageContents(i).call().then(function(content) {
 							// Set its contents:
-							item.appendChild(document.createTextNode(result));
+						var item = document.createElement('li');
+						item.appendChild(document.createTextNode(content));
+							// Add it to the list:
+							list.appendChild(item);
+						});
+						window.Reddit.methods.getMessageTimestamp(i).call().then(function(time) {
+							var item = document.createElement('li');
+							item.appendChild(document.createTextNode(time));
+							// Add it to the list:
+							list.appendChild(item);
+						});
+						window.Reddit.methods.getMessageAddress(i).call().then(function(adress) {
+							var item = document.createElement('li');
+							item.innerHTML += "<button>" + adress + "</button>";
 							// Add it to the list:
 							list.appendChild(item);
 						});
