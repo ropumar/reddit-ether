@@ -1,4 +1,5 @@
 pragma solidity ^0.5.12;
+pragma experimental ABIEncoderV2;
 
 contract Reddit {
     uint public maxLength;
@@ -8,20 +9,23 @@ contract Reddit {
         address senderAddress;
         uint timestamp;
   }
+    _postContent[] Messages; 
+    
+    constructor() public {
+        maxLength = 280;
+        postMessage("Hello World");
+    }
   
-  _postContent[] Messages; 
+    function getMessages()public view returns ( _postContent[] memory){
+    return Messages;
+  }
 
-  function postMessage(string memory _message)
-    public {
-    require(bytes(_message).length <= maxLength, "That message is too long.");
+  function postMessage(string memory _message) public{
+    require(bytes(_message).length <= maxLength, "Message too long");
     Messages.push(_postContent(_message, msg.sender, block.timestamp));
   }
     
-    constructor() public {
-        postMessage("Hello World");
-        maxLength = 280;
-    }
-    
+
     function setMaxLength(uint _maxLength) public {
         maxLength = _maxLength;
     }
