@@ -207,7 +207,7 @@ function makeUL(count) {
 						});
 						window.Reddit.methods.getMessageAddress(i).call().then(function(adress) {
 							var item = document.createElement('li');
-							item.innerHTML += "<button>" + adress + "</button>";
+							item.innerHTML += "<button onclick=""myFunction();">" + adress + "</button>";<input id="button" type="submit" name="button" onclick="myFunction();" value="enter"/>
 							// Add it to the list:
 							list.appendChild(item);
 						});
@@ -241,10 +241,6 @@ function makeUL(count) {
 						window.Reddit.methods.getMessageCount().call().then(function(result) {
 							document.getElementById('message').appendChild(makeUL(result));
 						});
-						// $("#message").text(message)
-						// messageList =window.Reddit.methods.message().outputs;
-			// Add the contents of options[0] to #foo:
-
 		}
       // Legacy dapp browsers...
       else if (window.web3) {
