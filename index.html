@@ -196,18 +196,32 @@ function makeUL(count) {
 							// Set its contents:
 						var item = document.createElement('li');
 						item.appendChild(document.createTextNode(content));
-							// Add it to the list:
+							// Add it to t©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©he list:
 							list.appendChild(item);
 						});
 						window.Reddit.methods.getMessageTimestamp(i).call().then(function(time) {
 							var item = document.createElement('li');
-							item.appendChild(document.createTextNode(time));
+							item.appendChild(document.createTextNode(timeConverter(time)));
 							// Add it to the list:
 							list.appendChild(item);
 						});
 						window.Reddit.methods.getMessageAddress(i).call().then(function(adress) {
-							var item = document.createElement('li');
-							item.innerHTML += "<button onclick=""myFunction();">" + adress + "</button>";<input id="button" type="submit" name="button" onclick="myFunction();" value="enter"/>
+							var item = document.createElement('li'),
+							button = document.createElement('input'),
+							br     = document.createElement('br'); 
+
+
+							button.type  = 'button';
+							button.value = adress;
+							button.addEventListener('click', function() {
+								alert(adress);
+							}, false);
+
+							item.appendChild(button);
+							item.appendChild(br);
+							// item.innerHTML += "<input id="button" type="submit" name=" +adress+ " onclick="myFunction();" value="enter"/>";
+							// "<button>" + adress + "</button>";
+							// <input id="button" type="submit" name="button" onclick="myFunction();" value="enter"/>
 							// Add it to the list:
 							list.appendChild(item);
 						});
@@ -261,12 +275,32 @@ function makeUL(count) {
     	}).then(function(res){
     		console.log(res);
     	});
-	}    	
+	}  
+	// function pay(index){
+	// 	window.Reddit.methods.payOwner(message).send(
+    // 	{
+    // 		from: window.coinbase
+    // 	}).then(function(res){
+    // 		console.log(res);
+    // 	});
+	// }
+	
+	function timeConverter(UNIX_timestamp){
+		var a = new Date(UNIX_timestamp * 1000);
+		var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		var year = a.getFullYear();
+		var month = months[a.getMonth()];
+		var date = a.getDate();
+		var hour = a.getHours();
+		var min = a.getMinutes();
+		var sec = a.getSeconds();
+		var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+	return time;
+	}
   </script>
 </head>
 <body>
   <div id="message"></div>
-
   <br>
   New Message: <input type="text" id="new_message" />
   <button onclick="setMessage()">Set Message</button>
