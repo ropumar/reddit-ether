@@ -215,8 +215,8 @@
 							button = document.createElement('input'),
 							br     = document.createElement('br'); 
 							button.type  = 'button'; 
-							// button.value = 1;
-							button.value = getVotes(i);					
+							button.value = 1;
+							// button.value = getVotes(i);					
 							button.addEventListener('click',function() {pay(i,adress)}, false); 
 							item.appendChild(button);
 							list.appendChild(item);
@@ -225,9 +225,9 @@
 					// Finally, return the constructed list:
 					return list;
 			}
-			async function getVotes(i){
-				return await window.Reddit.methods.getVotes(i).call().then( votes => {return votes});
-			}
+			// async function getVotes(i){
+			// 	return await window.Reddit.methods.getVotes(i).call().then( votes => {return votes});
+			// }
 			// .call().then( votes => {return votes});
 			// .call().then( votes => {return votes});
     // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
