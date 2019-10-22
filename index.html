@@ -210,20 +210,26 @@
 							item.appendChild(document.createTextNode(timeConverter(time)));
 							list.appendChild(item);
 						});
-						window.Reddit.methods.getMessageAddress(i).call().then(async function(adress) {
-						var item = document.createElement('li'),
-						button = document.createElement('input'),
-						br     = document.createElement('br'); 
-						button.type  = 'button'; 
-						button.value = await window.Reddit.methods.getVotes(i).call().then( votes => { return votes})
-						button.addEventListener('click',function() {pay(i,adress)}, false); 
-						// list.appendChild(item);
-	
-						}).then(item =>list.appendChild(item));
+						window.Reddit.methods.getMessageAddress(i).call().then(function(adress) {
+							var item = document.createElement('li'),
+							button = document.createElement('input'),
+							br     = document.createElement('br'); 
+							button.type  = 'button'; 
+							// button.value = 1;
+							button.value = getVotes(i);					
+							button.addEventListener('click',function() {pay(i,adress)}, false); 
+							item.appendChild(button);
+							list.appendChild(item);
+						});
 					}
 					// Finally, return the constructed list:
 					return list;
 			}
+			async function getVotes(i){
+				return await window.Reddit.methods.getVotes(i).call().then( votes => {return votes});
+			}
+			// .call().then( votes => {return votes});
+			// .call().then( votes => {return votes});
     // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   window.addEventListener('load', async () => {
       console.log("Loading web3...");
