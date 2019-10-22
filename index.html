@@ -198,38 +198,40 @@
 	function makeUL(count) {
 					// Create the list element:
 					var list = document.createElement('ul');
-					for(var i = 0; i < count; i++) {
-							console.log(i);
-						window.Reddit.methods.getMessageContents(i).call().then(function(content) {
-						var item = document.createElement('li');
-						item.appendChild(document.createTextNode(content));
-							list.appendChild(item);
-						});
-						window.Reddit.methods.getMessageTimestamp(i).call().then(function(time) {
+
+					var fetchPosts = new Promise(function(resolve, rejected) {
+						var posts = [];
+						for(var i = 0; i < count; i++) {
+								console.log(i);
+							var contentsPromise = window.Reddit.methods.getMessageContents(i).call()
+							var addressPromise = window.Reddit.methods.getMessageAddress(i).call()
+							var votesPromise = window.Reddit.methods.getVotes(i).call()
+							var timePromise = window.Reddit.methods.getMessageTimestamp(i).call()
+							var post = Promise.all([addressPromise, votesPromise, contentsPromise, timestamp])
+								.then(function([address, votes, content, timestamp]) {
+									return {
+										address, votes, content, timestamp
+									}
+								})
+
+							posts.push(post);
+						}
+						Promise.all(posts).then((posts) => resolve(posts));
+					});
+
+					fetchPosts.then((posts) => {
+						return posts;
+					}).then(function (posts) {
+						for(var i = 0; i < count; i++) {
 							var item = document.createElement('li');
-							item.appendChild(document.createTextNode(timeConverter(time)));
+							item.appendChild(document.createTextNode(posts[i].content));
+							item.appendChild(document.createTextNode(timeConverter(posts[i].time)));
+							item.appendChild(document.createTextNode(timeConverter(posts[i].votes)));
 							list.appendChild(item);
-						});
-						window.Reddit.methods.getMessageAddress(i).call().then(function(adress) {
-							var item = document.createElement('li'),
-							button = document.createElement('input'),
-							br     = document.createElement('br'); 
-							button.type  = 'button'; 
-							button.value = 1;
-							// button.value = getVotes(i);					
-							button.addEventListener('click',function() {pay(i,adress)}, false); 
-							item.appendChild(button);
-							list.appendChild(item);
-						});
-					}
-					// Finally, return the constructed list:
+						}
+					})
 					return list;
 			}
-			// async function getVotes(i){
-			// 	return await window.Reddit.methods.getVotes(i).call().then( votes => {return votes});
-			// }
-			// .call().then( votes => {return votes});
-			// .call().then( votes => {return votes});
     // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   window.addEventListener('load', async () => {
       console.log("Loading web3...");
