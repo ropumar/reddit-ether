@@ -5,7 +5,7 @@ contract Reddit {
     
     struct _postContent {
         string contents;
-        address senderAddress;
+        address payable senderAddress;
         uint timestamp;
         uint votes;
     }
@@ -43,7 +43,7 @@ contract Reddit {
     }
 
     function getMessageAddress(uint i) checkValidIndex(i)
-        public view returns (address) {
+        public view returns (address payable) {
         return Messages[i].senderAddress;
     }
 
@@ -57,8 +57,8 @@ contract Reddit {
         return Messages[i].votes;
     }
 
-    function payMessager(uint index) public payable returns (uint) {
+    function payMessager(uint index) public{
         Messages[index].votes = Messages[index].votes + 1;
-        Messages[index].senderAddress.transfer(1);
+        // Messages[index].transfer(10);
     }
 }
