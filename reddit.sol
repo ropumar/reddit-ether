@@ -11,12 +11,11 @@ contract Reddit {
     }
     _postContent[] Messages; 
     
-    constructor() public {
+    constructor() public{
         maxLength = 280;
         postMessage("Hello World");
     }
-  
-
+ 
     function postMessage(string memory _message) public{
         require(bytes(_message).length <= maxLength, "Message too long");
         Messages.push(_postContent(_message, msg.sender, block.timestamp, 0));
@@ -43,7 +42,7 @@ contract Reddit {
     }
 
     function getMessageAddress(uint i) checkValidIndex(i)
-        public view returns (address payable) {
+        public view returns (address) {
         return Messages[i].senderAddress;
     }
 
@@ -57,8 +56,8 @@ contract Reddit {
         return Messages[i].votes;
     }
 
-    function payMessager(uint index) public{
+    function payMessager(uint index) public payable{
         Messages[index].votes = Messages[index].votes + 1;
-        // Messages[index].transfer(10);
+        Messages[index].senderAddress.transfer(1 ether);
     }
 }
