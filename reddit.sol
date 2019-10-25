@@ -3,13 +3,13 @@ pragma solidity ^0.5.12;
 contract Reddit {
     uint public maxLength;
     
-    struct _postContent {
+    struct _postStruct {
         string contents;
         address payable senderAddress;
         uint timestamp;
         uint votes;
     }
-    _postContent[] Messages; 
+    _postStruct[] Messages; 
     
     constructor() public{
         maxLength = 280;
@@ -18,7 +18,7 @@ contract Reddit {
  
     function postMessage(string memory _message) public{
         require(bytes(_message).length <= maxLength, "Message too long");
-        Messages.push(_postContent(_message, msg.sender, block.timestamp, 0));
+        Messages.push(_postStruct(_message, msg.sender, block.timestamp, 0));
     }
     
 
@@ -26,7 +26,7 @@ contract Reddit {
         maxLength = _maxLength;
     }
     
-    modifier checkValidIndex(uint i) {
+    modifier checkIndex(uint i) {
         require(i < getMessageCount());
         require(i >= 0); 
         _;
@@ -36,22 +36,22 @@ contract Reddit {
         return Messages.length;
     }
 
-    function getMessageContents(uint i) checkValidIndex(i)
+    function getMessageContents(uint i) checkIndex(i)
         public view returns (string memory) {
         return Messages[i].contents;
     }
 
-    function getMessageAddress(uint i) checkValidIndex(i)
+    function getMessageAddress(uint i) checkIndex(i)
         public view returns (address) {
         return Messages[i].senderAddress;
     }
 
-    function getMessageTimestamp(uint i) checkValidIndex(i)
+    function getMessageTimestamp(uint i) checkIndex(i)
         public view returns (uint) {
         return Messages[i].timestamp;
     }
 
-    function getVotes(uint i) checkValidIndex(i)
+    function getVotes(uint i) checkIndex(i)
         public view returns (uint) {
         return Messages[i].votes;
     }
